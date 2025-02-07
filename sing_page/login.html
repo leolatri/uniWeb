@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Вход</title>
+        <link rel="stylesheet" type="text/css" href="/style_l.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="container_backimg"></div>
+            <div class="container_block-1">
+                <div class="container_block-2">
+                    <div class="block-2_h">
+                        <h1>Вход</h1>
+                    </div>
+                    <div class="block-2_choice">
+                        <select id="status">
+                            <option value="student">УЧЕНИК</option>
+                            <option value="teacher">УЧИТЕЛЬ</option>
+                            <option value="admin">АДМИН</option>
+                        </select>
+                    </div>
+                    <div class="block-2_log">
+                        <input id="login" type="text" placeholder=" ЛОГИН">
+                        <input id="password" type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder=" ПАРОЛЬ">
+                        <button onclick="login()">ВОЙТИ</button>
+                    </div>
+                    <div class="block-2_reg">
+                        <a href="http://localhost:3000/register">РЕГИСТРИЦИЯ</a>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function login() {
+                let status = document.getElementById('status').value;
+                let login = document.getElementById('login').value;
+                let password = document.getElementById('password').value;
+
+                let data = {
+                    status,
+                    login,
+                    password
+                };
+
+                fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка при входе');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    alert(data); 
+                    window.location.href = 'http://localhost:3000/theory';
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+            }
+            </script>
+        </div>
+    </body>
+</html>
