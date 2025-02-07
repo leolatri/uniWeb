@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задания</title>
+    <link rel="stylesheet" type="text/css" href="/style_ex.css">
+</head>
+<body>
+    <div class="container">
+        <div class="imgs">
+            <img class="first" src="../img/communications.png">
+            <img src="../img/grades.png">
+            <img class="first" src="../img/chatting.png">
+        </div>
+        <div class="container_block-1">
+            <div class="container_block-2">
+                <div class="block-2_header">
+                    <img src="../img/mouse.png">
+                    <h1 id="question-title"></h1>
+                </div>
+                <div class="block-2_content">
+                    <div class="content_theory">
+                        <h3>Задания</h3>
+                    </div>
+                    <div class="content_li">
+                        <div class="li-1">
+                            <h4 id="question-text"></h4>
+                            <form id="question-form" onsubmit="event.preventDefault(); checkAnswer();">
+                                <div id="options-container"></div>
+                                <button type="submit" class="answer">Ответить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="add">
+                    <div class="but" id="prev-button"><a href="#">Прошлое задание</a></div> 
+                    <div class="but"><a href="http://localhost:3000/theory">Оглавление</a></div> 
+                    <div class="but" id="next-button"><a href="#">Следующее задание</a></div> 
+                </div>
+            </div>
+        </div>
+        <div class="imgs" id="left">
+            <img class="last" src="../img/graphic-designer.png">
+            <img src="../img/reading-book.png">
+            <img class="last" src="../img/working.png">
+        </div>
+    </div>
+    <script>
+        let currentQuestionIndex = 0;
+        let questions = [];
+
+        function loadQuestions() {
+            fetch('/questions')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    questions = data;
+                    console.log(questions); 
+                    const testId = new URLSearchParams(window.location.search).get('testId');
+                    currentQuestionIndex = parseInt(testId) - 1;
+
+                    if (isNaN(currentQuestionIndex) || currentQuestionIndex < 0) {
+                        console.error('Неверный testId:', testId);
+                        return; 
+                    }
+
+                    if (questions.length === 0) {
+                        console.error('Нет доступных вопросов');
+                        return; 
+                    }
+
+                    displayQuestion();
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке вопросов:', error);
+                });
+        }
+
+        function displayQuestion() {
+            const question = questions[currentQuestionIndex];
+            if (!question) {
+                console.error('Вопрос не найден для индекса:', currentQuestionIndex);
+                return; 
+            }
+            
+            document.getElementById('question-title').innerText = `${question.id}. ${question.title}`;
+            document.getElementById('question-text').innerText = ` ${question.question}`;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                optionsContainer.innerHTML += `
+                    <p>
+                        <input type="radio" name="option" value="${index}">
+                        ${option}
+                    </p><br>
+                `;
+            });
+                
+            const prevIndex = currentQuestionIndex === 0 ? questions.length - 1 : currentQuestionIndex - 1;
+            const nextIndex = currentQuestionIndex === questions.length - 1 ? 0 : currentQuestionIndex + 1;
+
+            document.getElementById('prev-button').querySelector('a').href = `http://localhost:3000/test?testId=${prevIndex + 1}`;
+            document.getElementById('next-button').querySelector('a').href = `http://localhost:3000/test?testId=${nextIndex + 1}`;
+        }
+
+        function checkAnswer() {
+            const options = document.getElementsByName('option');
+            let selectedOption;
+            for (const option of options) {
+                if (option.checked) {
+                    selectedOption = option.value;
+                    break;
+                }
+            }
+
+            if (selectedOption !== undefined) {
+                const question = questions[currentQuestionIndex];
+
+                if (parseInt(selectedOption) === question.correctAnswer) {
+                    alert("Правильно!");
+                } else {
+                    alert("Ответ неверный! Попробуй еще раз.");
+                }
+            } else {
+                alert("Выберите один из вариантов ответа.");
+            }
+        }
+        window.onload = loadQuestions;
+
+    </script>
+</body>
+</html>
+

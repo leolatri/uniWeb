@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.647);
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+.container_backimg {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url(./library.jpg);
+    z-index: -1;
+    position: absolute;
+}
+
+.container_block-1 {
+    width: 600px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: start;
+    align-items: center;
+}
+
+.container_block-2 {
+    width: 400px;
+    height: 400px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column nowrap;
+    gap: 7px;
+    padding: 30px 45px;
+}
+
+.block-2_h {
+    font-size: 25px;
+    display: inline-block;
+    margin: 0 0 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border-bottom: 1px solid #cacaca;
+    color: #929292;
+    height: 20%;
+    width: 73%;
+}
+
+.block-2_choice {
+    height: 13%;
+    width: 100%;
+}
+
+.block-2_choice select {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: 1px solid #b7b7b7;
+    font-size: 14px;
+    color: #1f1f1fa7;
+    padding-left: 20px;
+}
+
+.block-2_log {
+    height: 44%;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    flex-flow: column nowrap;
+}
+
+.block-2_log input,
+.block-2_log button {
+    height: 30%;
+    text-align: center;
+    border: 1px solid #b7b7b7;
+    font-size: 14px;
+    color: #1f1f1fa7;
+    text-transform: uppercase;
+}
+
+.block-2_log button {
+    background-color: #ff8575;
+    color: rgb(255, 255, 255);
+    transition: transform 0.3s ease;
+}
+
+.block-2_log button:hover {
+    background-color: #ff9c8f;
+}
+
+.block-2_reg {
+    width: 100%;
+    height: 14%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.block-2_reg a {
+    color: #1f1f1fa7;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    padding-left: 10px;
+}
+
+.block-2_reg a:hover {
+    color: #b7b7b7;
+}
